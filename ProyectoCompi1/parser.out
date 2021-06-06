@@ -1,0 +1,277 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Unused terminals:
+
+    ID
+    RFLOAT
+    RINT
+    RSTRING
+
+Grammar
+
+Rule 0     S' -> init
+Rule 1     init -> instrucciones
+Rule 2     instrucciones -> instrucciones instruccion
+Rule 3     instrucciones -> instruccion
+Rule 4     instruccion -> imprimir_instr
+Rule 5     instruccion -> error PUNTOCOMA
+Rule 6     imprimir_instr -> RPRINT PARA expresion PARC PUNTOCOMA
+Rule 7     expresion -> expresion MAS expresion
+Rule 8     expresion -> expresion MENOS expresion
+Rule 9     expresion -> ENTERO
+Rule 10    expresion -> DECIMAL
+Rule 11    expresion -> CADENA
+
+Terminals, with rules where they appear
+
+CADENA               : 11
+DECIMAL              : 10
+ENTERO               : 9
+ID                   : 
+MAS                  : 7
+MENOS                : 8
+PARA                 : 6
+PARC                 : 6
+PUNTOCOMA            : 5 6
+RFLOAT               : 
+RINT                 : 
+RPRINT               : 6
+RSTRING              : 
+error                : 5
+
+Nonterminals, with rules where they appear
+
+expresion            : 6 7 7 8 8
+imprimir_instr       : 4
+init                 : 0
+instruccion          : 2 3
+instrucciones        : 1 2
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . init
+    (1) init -> . instrucciones
+    (2) instrucciones -> . instrucciones instruccion
+    (3) instrucciones -> . instruccion
+    (4) instruccion -> . imprimir_instr
+    (5) instruccion -> . error PUNTOCOMA
+    (6) imprimir_instr -> . RPRINT PARA expresion PARC PUNTOCOMA
+
+    error           shift and go to state 5
+    RPRINT          shift and go to state 6
+
+    init                           shift and go to state 1
+    instrucciones                  shift and go to state 2
+    instruccion                    shift and go to state 3
+    imprimir_instr                 shift and go to state 4
+
+state 1
+
+    (0) S' -> init .
+
+
+
+state 2
+
+    (1) init -> instrucciones .
+    (2) instrucciones -> instrucciones . instruccion
+    (4) instruccion -> . imprimir_instr
+    (5) instruccion -> . error PUNTOCOMA
+    (6) imprimir_instr -> . RPRINT PARA expresion PARC PUNTOCOMA
+
+    $end            reduce using rule 1 (init -> instrucciones .)
+    error           shift and go to state 5
+    RPRINT          shift and go to state 6
+
+    instruccion                    shift and go to state 7
+    imprimir_instr                 shift and go to state 4
+
+state 3
+
+    (3) instrucciones -> instruccion .
+
+    error           reduce using rule 3 (instrucciones -> instruccion .)
+    RPRINT          reduce using rule 3 (instrucciones -> instruccion .)
+    $end            reduce using rule 3 (instrucciones -> instruccion .)
+
+
+state 4
+
+    (4) instruccion -> imprimir_instr .
+
+    error           reduce using rule 4 (instruccion -> imprimir_instr .)
+    RPRINT          reduce using rule 4 (instruccion -> imprimir_instr .)
+    $end            reduce using rule 4 (instruccion -> imprimir_instr .)
+
+
+state 5
+
+    (5) instruccion -> error . PUNTOCOMA
+
+    PUNTOCOMA       shift and go to state 8
+
+
+state 6
+
+    (6) imprimir_instr -> RPRINT . PARA expresion PARC PUNTOCOMA
+
+    PARA            shift and go to state 9
+
+
+state 7
+
+    (2) instrucciones -> instrucciones instruccion .
+
+    error           reduce using rule 2 (instrucciones -> instrucciones instruccion .)
+    RPRINT          reduce using rule 2 (instrucciones -> instrucciones instruccion .)
+    $end            reduce using rule 2 (instrucciones -> instrucciones instruccion .)
+
+
+state 8
+
+    (5) instruccion -> error PUNTOCOMA .
+
+    error           reduce using rule 5 (instruccion -> error PUNTOCOMA .)
+    RPRINT          reduce using rule 5 (instruccion -> error PUNTOCOMA .)
+    $end            reduce using rule 5 (instruccion -> error PUNTOCOMA .)
+
+
+state 9
+
+    (6) imprimir_instr -> RPRINT PARA . expresion PARC PUNTOCOMA
+    (7) expresion -> . expresion MAS expresion
+    (8) expresion -> . expresion MENOS expresion
+    (9) expresion -> . ENTERO
+    (10) expresion -> . DECIMAL
+    (11) expresion -> . CADENA
+
+    ENTERO          shift and go to state 11
+    DECIMAL         shift and go to state 12
+    CADENA          shift and go to state 13
+
+    expresion                      shift and go to state 10
+
+state 10
+
+    (6) imprimir_instr -> RPRINT PARA expresion . PARC PUNTOCOMA
+    (7) expresion -> expresion . MAS expresion
+    (8) expresion -> expresion . MENOS expresion
+
+    PARC            shift and go to state 14
+    MAS             shift and go to state 15
+    MENOS           shift and go to state 16
+
+
+state 11
+
+    (9) expresion -> ENTERO .
+
+    PARC            reduce using rule 9 (expresion -> ENTERO .)
+    MAS             reduce using rule 9 (expresion -> ENTERO .)
+    MENOS           reduce using rule 9 (expresion -> ENTERO .)
+
+
+state 12
+
+    (10) expresion -> DECIMAL .
+
+    PARC            reduce using rule 10 (expresion -> DECIMAL .)
+    MAS             reduce using rule 10 (expresion -> DECIMAL .)
+    MENOS           reduce using rule 10 (expresion -> DECIMAL .)
+
+
+state 13
+
+    (11) expresion -> CADENA .
+
+    PARC            reduce using rule 11 (expresion -> CADENA .)
+    MAS             reduce using rule 11 (expresion -> CADENA .)
+    MENOS           reduce using rule 11 (expresion -> CADENA .)
+
+
+state 14
+
+    (6) imprimir_instr -> RPRINT PARA expresion PARC . PUNTOCOMA
+
+    PUNTOCOMA       shift and go to state 17
+
+
+state 15
+
+    (7) expresion -> expresion MAS . expresion
+    (7) expresion -> . expresion MAS expresion
+    (8) expresion -> . expresion MENOS expresion
+    (9) expresion -> . ENTERO
+    (10) expresion -> . DECIMAL
+    (11) expresion -> . CADENA
+
+    ENTERO          shift and go to state 11
+    DECIMAL         shift and go to state 12
+    CADENA          shift and go to state 13
+
+    expresion                      shift and go to state 18
+
+state 16
+
+    (8) expresion -> expresion MENOS . expresion
+    (7) expresion -> . expresion MAS expresion
+    (8) expresion -> . expresion MENOS expresion
+    (9) expresion -> . ENTERO
+    (10) expresion -> . DECIMAL
+    (11) expresion -> . CADENA
+
+    ENTERO          shift and go to state 11
+    DECIMAL         shift and go to state 12
+    CADENA          shift and go to state 13
+
+    expresion                      shift and go to state 19
+
+state 17
+
+    (6) imprimir_instr -> RPRINT PARA expresion PARC PUNTOCOMA .
+
+    error           reduce using rule 6 (imprimir_instr -> RPRINT PARA expresion PARC PUNTOCOMA .)
+    RPRINT          reduce using rule 6 (imprimir_instr -> RPRINT PARA expresion PARC PUNTOCOMA .)
+    $end            reduce using rule 6 (imprimir_instr -> RPRINT PARA expresion PARC PUNTOCOMA .)
+
+
+state 18
+
+    (7) expresion -> expresion MAS expresion .
+    (7) expresion -> expresion . MAS expresion
+    (8) expresion -> expresion . MENOS expresion
+
+  ! shift/reduce conflict for MAS resolved as shift
+  ! shift/reduce conflict for MENOS resolved as shift
+    PARC            reduce using rule 7 (expresion -> expresion MAS expresion .)
+    MAS             shift and go to state 15
+    MENOS           shift and go to state 16
+
+  ! MAS             [ reduce using rule 7 (expresion -> expresion MAS expresion .) ]
+  ! MENOS           [ reduce using rule 7 (expresion -> expresion MAS expresion .) ]
+
+
+state 19
+
+    (8) expresion -> expresion MENOS expresion .
+    (7) expresion -> expresion . MAS expresion
+    (8) expresion -> expresion . MENOS expresion
+
+  ! shift/reduce conflict for MAS resolved as shift
+  ! shift/reduce conflict for MENOS resolved as shift
+    PARC            reduce using rule 8 (expresion -> expresion MENOS expresion .)
+    MAS             shift and go to state 15
+    MENOS           shift and go to state 16
+
+  ! MAS             [ reduce using rule 8 (expresion -> expresion MENOS expresion .) ]
+  ! MENOS           [ reduce using rule 8 (expresion -> expresion MENOS expresion .) ]
+
+WARNING: 
+WARNING: Conflicts:
+WARNING: 
+WARNING: shift/reduce conflict for MAS in state 18 resolved as shift
+WARNING: shift/reduce conflict for MENOS in state 18 resolved as shift
+WARNING: shift/reduce conflict for MAS in state 19 resolved as shift
+WARNING: shift/reduce conflict for MENOS in state 19 resolved as shift
