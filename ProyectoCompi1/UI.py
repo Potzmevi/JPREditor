@@ -191,7 +191,7 @@ def guardar_como():
     global ruta
 
     fichero = FileDialog.asksaveasfile(title="Guardar fichero", 
-        mode="w", defaultextension=".txt")
+        mode="w", defaultextension=".jpr")
 
     if fichero is not None:
         ruta = fichero.name
