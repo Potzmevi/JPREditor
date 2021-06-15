@@ -8,6 +8,8 @@ class TIPO(Enum):
     CADENA = 5
     NULO = 6
     ARREGLO = 7
+    VAR = 8
+    
 
 class OperadorAritmetico(Enum):
     MAS = 1
@@ -17,6 +19,8 @@ class OperadorAritmetico(Enum):
     POT = 5
     MOD = 6
     UMENOS = 7
+    INCREMENTO=8
+    DECREMENTO=9
 
 class OperadorRelacional(Enum):
     MENORQUE = 1
