@@ -19,6 +19,7 @@ class Relacional(Instruccion):
         if isinstance(der, Excepcion): return der
         
         try:
+            
             if self.operador == OperadorRelacional.MENORQUE:
                 if self.OperacionIzq.tipo == TIPO.ENTERO and self.OperacionDer.tipo == TIPO.ENTERO:
                     return self.obtenerVal(self.OperacionIzq.tipo, izq) < self.obtenerVal(self.OperacionDer.tipo, der)

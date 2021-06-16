@@ -39,7 +39,6 @@ class TablaSimbolos:
                     return None             #VARIABLE ACTUALIZADA
                 elif simbolo.getTipo() == 'INCREMENTO' or simbolo.getTipo() == 'DECREMENTO':
                     if (tablaActual.tabla[simbolo.id].getTipo() == TIPO.ENTERO or tablaActual.tabla[simbolo.id].getTipo() == TIPO.DECIMAL):
-                        print("entra")
                         valorAnterior = tablaActual.tabla[simbolo.id].getValor()
                         tablaActual.tabla[simbolo.id].setValor(valorAnterior+simbolo.getValor())
                         return None

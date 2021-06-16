@@ -20,7 +20,7 @@ class Declaracion(Instruccion):
                 return Excepcion("Semantico", "Tipo de dato diferente en Declaracion", self.fila, self.columna)
             if(self.tipo==TIPO.VAR):
                 simbolo = Simbolo(str(self.identificador), self.expresion.tipo, self.fila, self.columna, value)
-            if(self.tipo==TIPO.DECIMAL):
+            elif(self.tipo==TIPO.DECIMAL):
                 simbolo = Simbolo(str(self.identificador), self.expresion.tipo, self.fila, self.columna, float(value) )
             else:
                 simbolo = Simbolo(str(self.identificador), self.tipo, self.fila, self.columna, value)

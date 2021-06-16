@@ -224,6 +224,7 @@ from Instrucciones.Break import Break
 from Instrucciones.Funcion import Funcion
 from Instrucciones.Llamada import Llamada
 from Instrucciones.Main import Main
+from Instrucciones.For import For
 
 def p_init(t) :
     'init            : instrucciones'
@@ -257,7 +258,8 @@ def p_instruccion(t) :
                         | main_instr
                         | funcion_instr
                         | llamada_instr finins
-                        | asignacion2_instr finins'''
+                        | asignacion2_instr finins
+                        | for_instr finins'''
     t[0] = t[1]
     t[0] = t[1]
     
@@ -316,6 +318,34 @@ def p_if3(t) :
     'if_instr     : RIF PARA expresion PARC LLAVEA instrucciones LLAVEC RELSE if_instr'
     t[0] = If(t[3], t[6], None, t[9], t.lineno(1), find_column(input, t.slice[1]))
 
+# ///////////////////////////////////////FOR INSTRUCCION//////////////////////////////////////////////////
+
+def p_for_instr(t):
+    #              1    2      3          3       4             5        6
+    '''
+    for_instr : RFOR PARA asignacion_instr PUNTOCOMA expresion PUNTOCOMA asignacion2_instr PARC LLAVEA instrucciones LLAVEC
+    '''
+    t[0] = For(t[3],t[5],t[7],t[10],t.lineno(1), find_column(input, t.slice[1]))
+def p_for_instr_new_var(t):
+    #                    1  2                    3       4         5   6                 7        8   9
+    '''
+        for_instr : RFOR PARA declarar_con_valor_for PUNTOCOMA expresion PUNTOCOMA asignacion2_instr PARC LLAVEA instrucciones LLAVEC
+    '''
+    t[0] = For(t[3],t[5],t[7],t[10],t.lineno(1), find_column(input, t.slice[1]))
+def p_for_instr_var(t):
+    #                    1  2                    3       4         5   6                 7        8   9
+    '''
+        for_instr : RFOR PARA expresion PUNTOCOMA expresion PUNTOCOMA asignacion2_instr PARC LLAVEA instrucciones LLAVEC
+    '''
+    t[0] = For(t[3],t[5],t[7],t[10],t.lineno(1), find_column(input, t.slice[1]))
+def p_for_declara_con_valor(t):
+    '''
+    declarar_con_valor_for : tipo_for ID IGUAL expresion
+    '''
+    t[0] = Declaracion(t[1], t[2], t.lineno(2), find_column(input, t.slice[2]), t[4])
+
+#y esto es la parte de la gramatica
+
 #///////////////////////////////////////WHILE//////////////////////////////////////////////////
 
 def p_while(t) :
@@ -368,6 +398,16 @@ def p_tipo(t) :
         t[0] = TIPO.CADENA
     elif t[1] == 'boolean':
         t[0] = TIPO.BOOLEANO
+    elif t[1] == 'var':
+        t[0] = TIPO.VAR
+        
+#///////////////////////////////////////TIPO FOR//////////////////////////////////////////////////
+
+def p_tipo_for(t) :
+    '''tipo_for    : RINT
+                | RVAR '''
+    if t[1] == 'int':
+        t[0] = TIPO.ENTERO
     elif t[1] == 'var':
         t[0] = TIPO.VAR
 

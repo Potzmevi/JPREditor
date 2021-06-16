@@ -28,4 +28,4 @@ class While(Instruccion):
                 else:
                     break
             else:
-                return Excepcion("Semantico", "Tipo de dato no booleano en IF.", self.fila, self.columna)
+                return Excepcion("Semantico", "Tipo de dato no booleano en While.", self.fila, self.columna)
