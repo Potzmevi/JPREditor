@@ -53,7 +53,7 @@ class Aritmetica(Instruccion):
 
         elif self.operador == OperadorAritmetico.DIV:  # DIVISION
                 if (self.OperacionIzq.tipo == TIPO.ENTERO and self.OperacionDer.tipo == TIPO.ENTERO and self.obtenerVal(self.OperacionDer.tipo, der)!=0):
-                    self.tipo = TIPO.ENTERO
+                    self.tipo = TIPO.DECIMAL
                     return self.obtenerVal(self.OperacionIzq.tipo, izq) / self.obtenerVal(self.OperacionDer.tipo, der)
                 elif (self.OperacionIzq.tipo == TIPO.ENTERO and self.OperacionDer.tipo == TIPO.DECIMAL) or (self.OperacionIzq.tipo == TIPO.DECIMAL and self.OperacionDer.tipo == TIPO.DECIMAL) or (self.OperacionIzq.tipo == TIPO.DECIMAL and self.OperacionDer.tipo == TIPO.ENTERO and self.obtenerVal(self.OperacionDer.tipo, der)!=0):
                     self.tipo = TIPO.DECIMAL
@@ -73,7 +73,7 @@ class Aritmetica(Instruccion):
 
         elif self.operador == OperadorAritmetico.MOD:  # MODULAR
             if (self.OperacionIzq.tipo == TIPO.ENTERO and self.OperacionDer.tipo == TIPO.ENTERO and self.obtenerVal(self.OperacionDer.tipo, der)!=0):
-                self.tipo = TIPO.ENTERO
+                self.tipo = TIPO.DECIMAL
                 return self.obtenerVal(self.OperacionIzq.tipo, izq) % self.obtenerVal(self.OperacionDer.tipo, der)
             elif (self.OperacionIzq.tipo == TIPO.ENTERO and self.OperacionDer.tipo == TIPO.DECIMAL) or (self.OperacionIzq.tipo == TIPO.DECIMAL and self.OperacionDer.tipo == TIPO.DECIMAL) or (self.OperacionIzq.tipo == TIPO.DECIMAL and self.OperacionDer.tipo == TIPO.ENTERO and self.obtenerVal(self.OperacionDer.tipo, der)!=0):
                 self.tipo = TIPO.DECIMAL

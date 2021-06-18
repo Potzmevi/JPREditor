@@ -28,7 +28,8 @@ class Switch(Instruccion):
 
                 if value_expresion == value_case:
                     result = case.interpretar(tree, table)
-                    break
+                    if (result):
+                        break
             if not(result): # si result  == true --> el caso evaluado trae break
                 if self.default != None:
                     self.default.interpretar(tree,table)

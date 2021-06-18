@@ -4,6 +4,7 @@ from tkinter import filedialog as FileDialog
 from tkinter import messagebox
 from tkinter import ttk
 from grammar import analizarTexto as compilar
+from grammar import getErrores as errores
 
 # Metodos
 # Actualizar lineas
@@ -112,17 +113,19 @@ tv1.heading('Tipo', text='Tipo', anchor=CENTER)
 tv1.heading('Descripcion', text='Descripcion', anchor=CENTER)
 tv1.heading('Linea', text='Linea', anchor=CENTER)
 tv1.heading('Columna', text='Columna', anchor=CENTER)
-tv1.insert(parent='', index=0, iid=0, text='', values=('1','Vineet','Alpha'))
-tv1.insert(parent='', index=1, iid=1, text='', values=('2','Anil','Bravo'))
-tv1.insert(parent='', index=2, iid=2, text='', values=('3','Vinod','Charlie'))
-tv1.insert(parent='', index=3, iid=3, text='', values=('4','Vimal','Delta'))
-tv1.insert(parent='', index=4, iid=4, text='', values=('5','Manjeet','Echo'))
 tv1.grid(row=5,column=1)
 
 def analizar():
     texto=compilar(editor.get(1.0,END))
     console.delete(1.0, "end")
     console.insert(INSERT,texto)
+    listaerrores=errores()
+    contador=1
+    tv1.delete(*tv1.get_children())
+    for error in listaerrores:
+        tv1.insert(parent='', index=contador, iid=contador, text='', values=(contador,error.getTipo(),error.getDescripcion(),error.getFila(),error.getColumna()))
+        contador+=1
+    
 
 #BOTON COMPILAR
 boton1= Button(ventana,text="Compilar",width=25,command=analizar)
@@ -164,7 +167,7 @@ def abrir():
     global ruta
     ruta = FileDialog.askopenfilename(
         initialdir='.', 
-        filetypes=(("Ficheros de texto", "*.txt"),),
+        filetypes=(("Ficheros de texto", "*.jpr"),),
         title="Abrir un fichero de texto")
 
     if ruta != "":

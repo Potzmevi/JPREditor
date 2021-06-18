@@ -79,7 +79,8 @@ tokens  = [
     'CADENA',
     'BOOLEANO',
     'CHARACTER',
-    'ID'
+    'ID',
+    'DOSPUNTOS'
 ] + list(reservadas.values())
 
 # Tokens
@@ -100,12 +101,13 @@ t_MENORQUE      = r'<'
 t_MAYORQUE      = r'>'
 t_IGUALIGUAL    = r'=='
 t_IGUAL         = r'='
-t_DIFERENTE     = r'!='
+t_DIFERENTE     = r'=!'
 t_MAYORIGUAL    = r'>='
 t_MENORIGUAL    = r'<='
 t_AND           = r'&&'
 t_OR            = r'\|\|'
 t_NOT           = r'!'
+t_DOSPUNTOS     = r':'
 
 
 def t_DECIMAL(t):
@@ -144,30 +146,33 @@ def t_ID(t):
      return t
 
 def t_CADENA(t):
-    r'(\".*?\")'
+    r'\"(\\"|.)*?\"'
     t.value = t.value[1:-1] # remuevo las comillas
     
     t.value = t.value.replace('\\t','\t')
     t.value = t.value.replace('\\n','\n')
-    t.value = t.value.replace("\\'","\'")
     t.value = t.value.replace('\\"','\"')
+    t.value = t.value.replace("\\'","\'")
     t.value = t.value.replace('\\\\','\\')
-    t.value = t.value.replace('\\r','\r')
-    t.value = t.value.replace('\\f','\f')
-    t.value = t.value.replace('\\b','\b')
     return t
 
 def t_CHARACTER(t):
     r'(\'.?\')'
     t.value = t.value[1:-1] # remuevo las comillas
+    
+    t.value = t.value.replace('\\t','\t')
+    t.value = t.value.replace('\\n','\n')
+    t.value = t.value.replace('\\"','\"')
+    t.value = t.value.replace("\\'","\'")
+    t.value = t.value.replace('\\\\','\\') 
     return t
 
-# Comentario multilinea // ...
+# Comentario multilinea 
 def t_COMENTARIO_MULTILINEA(t):
-    r'\#\*(.|\n)*\*\#'
+    r'\#\*(.|\n)*?\*\#'
     t.lexer.lineno += t.value.count('\n')
-
-# Comentario simple // ...
+    
+# Comentario simple 
 def t_COMENTARIO_SIMPLE(t):
     r'\#.*\n'
     t.lexer.lineno += 1
@@ -179,8 +184,17 @@ def t_newline(t):
     r'\n+'
     t.lexer.lineno += t.value.count("\n")
     
+def p_error(t):
+    try:
+        errores.append(Excepcion("Lexico", "Error léxico." +
+                    t.value[0], t.lexer.lineno, find_column(input, t)))
+    except:
+        errores.append(Excepcion("Lexico", "Error léxico." , 0, 0))
+        
+
 def t_error(t):
-    errores.append(Excepcion("Lexico","Error léxico." + t.value[0] , t.lexer.lineno, find_column(input, t)))
+    errores.append(Excepcion("Lexico", "Error léxico." +
+                   t.value[0], t.lexer.lineno, find_column(input, t)))
     t.lexer.skip(1)
 
 # Compute column.
@@ -204,6 +218,7 @@ precedence = (
     ('left','POR','DIV','MOD'),
     ('nonassoc','POT'),
     ('right','UMENOS'),
+    ('left','INCREMENTO','DECREMENTO'),
     )
 # Definición de la gramática
 
@@ -225,6 +240,8 @@ from Instrucciones.Funcion import Funcion
 from Instrucciones.Llamada import Llamada
 from Instrucciones.Main import Main
 from Instrucciones.For import For
+from Instrucciones.Switch import Switch
+from Instrucciones.Case import Case
 
 def p_init(t) :
     'init            : instrucciones'
@@ -259,7 +276,8 @@ def p_instruccion(t) :
                         | funcion_instr
                         | llamada_instr finins
                         | asignacion2_instr finins
-                        | for_instr finins'''
+                        | for_instr finins
+                        | switch_inst finins'''
     t[0] = t[1]
     t[0] = t[1]
     
@@ -269,7 +287,8 @@ def p_finins(t) :
     t[0] = None
 
 def p_instruccion_error(t):
-    'instruccion        : error PUNTOCOMA'
+    '''instruccion        : error PUNTOCOMA
+                        | error'''
     errores.append(Excepcion("Sintáctico","Error Sintáctico." + str(t[1].value) , t.lineno(1), find_column(input, t.slice[1])))
     t[0] = ""
 #///////////////////////////////////////IMPRIMIR//////////////////////////////////////////////////
@@ -281,6 +300,9 @@ def p_imprimir(t) :
     '''
     t[0] = Imprimir(t[3], t.lineno(1), find_column(input, t.slice[1]))
 
+def p_imprimir_error(t):
+      'imprimir_instr : RPRINT PARA error PARC'
+      errores.append(Excepcion("Lexico","Error léxico." + t.value[0] , t.lexer.lineno, find_column(input, t)))
 #///////////////////////////////////////DECLARACION//////////////////////////////////////////////////
 
 def p_declaracion(t) :
@@ -318,7 +340,54 @@ def p_if3(t) :
     'if_instr     : RIF PARA expresion PARC LLAVEA instrucciones LLAVEC RELSE if_instr'
     t[0] = If(t[3], t[6], None, t[9], t.lineno(1), find_column(input, t.slice[1]))
 
-# ///////////////////////////////////////FOR INSTRUCCION//////////////////////////////////////////////////
+
+#///////////////////////////////////////SWITCH INSTRUCCION//////////////////////////////////////////////////
+def p_switch_instr_lst_case(t):
+    #`              1       2       3       4       5       6       7
+    '''
+    switch_inst : RSWITCH PARA expresion PARC LLAVEA lst_case LLAVEC
+    '''
+    t[0] = Switch(t[3],t[6],None,t.lineno(5), find_column(input, t.slice[5]))
+    #       expresion, lst_case,lst_default, fila, columna
+def p_switch_instr_lst_case_defaul(t):
+    # `              1       2       3       4       5       6       7     8
+    '''
+    switch_inst : RSWITCH PARA expresion PARC LLAVEA lst_case default LLAVEC
+    '''
+    t[0] = Switch(t[3], t[6], t[7], t.lineno(5), find_column(input, t.slice[5]))
+def p_switch_instr__defaul(t):
+    # `              1       2       3       4       5       6       7
+    '''
+    switch_inst : RSWITCH PARA expresion PARC LLAVEA  default LLAVEC
+    '''
+    t[0] = Switch(t[3], None, t[6], t.lineno(5), find_column(input, t.slice[5]))
+def p_lst_case_instr(t):
+    '''
+    lst_case : lst_case case
+    '''
+    if t[2] != "":
+        t[1].append(t[2])
+    t[0] = t[1]
+def p_lst_case_instr_single(t):
+    '''
+    lst_case :  case
+    '''
+    t[0] = [t[1]]
+def p_case_instr(t):
+    #       1       2       3       4
+    '''
+    case : RCASE expresion DOSPUNTOS instrucciones
+    '''
+    t[0] = Case(t[2],t[4],t.lineno(3), find_column(input, t.slice[3]))
+def p_default_instr(t):
+    #       1       2       3       4
+    '''
+    default : RDEFAULT  DOSPUNTOS instrucciones
+    '''
+    t[0] = Case(t[1],t[3],t.lineno(2), find_column(input, t.slice[2]))
+
+
+# ///////////////////////////////////////FOR//////////////////////////////////////////////////
 
 def p_for_instr(t):
     #              1    2      3          3       4             5        6
@@ -388,17 +457,17 @@ def p_tipo(t) :
                 | RBOOLEAN
                 | RCHAR
                 | RVAR '''
-    if t[1] == 'int':
+    if t[1].lower() == 'int':
         t[0] = TIPO.ENTERO
-    elif t[1] == 'double':
+    elif t[1].lower() == 'double':
         t[0] = TIPO.DECIMAL
-    elif t[1] == 'char':
+    elif t[1].lower() == 'char':
         t[0] = TIPO.CHARACTER
-    elif t[1] == 'string':
+    elif t[1].lower() == 'string':
         t[0] = TIPO.CADENA
-    elif t[1] == 'boolean':
+    elif t[1].lower() == 'boolean':
         t[0] = TIPO.BOOLEANO
-    elif t[1] == 'var':
+    elif t[1].lower() == 'var':
         t[0] = TIPO.VAR
         
 #///////////////////////////////////////TIPO FOR//////////////////////////////////////////////////
@@ -406,9 +475,9 @@ def p_tipo(t) :
 def p_tipo_for(t) :
     '''tipo_for    : RINT
                 | RVAR '''
-    if t[1] == 'int':
+    if t[1].lower() == 'int':
         t[0] = TIPO.ENTERO
-    elif t[1] == 'var':
+    elif t[1].lower() == 'var':
         t[0] = TIPO.VAR
 
 
@@ -455,7 +524,7 @@ def p_expresion_binaria(t):
         t[0] = Relacional(OperadorRelacional.MAYORQUE, t[1],t[3], t.lineno(2), find_column(input, t.slice[2]))
     elif t[2] == '==':
         t[0] = Relacional(OperadorRelacional.IGUALIGUAL, t[1],t[3], t.lineno(2), find_column(input, t.slice[2]))
-    elif t[2] == '!=':
+    elif t[2] == '=!':
         t[0] = Relacional(OperadorRelacional.DIFERENTE, t[1],t[3], t.lineno(2), find_column(input, t.slice[2]))
     elif t[2] == '>=':
         t[0] = Relacional(OperadorRelacional. MAYORIGUAL, t[1],t[3], t.lineno(2), find_column(input, t.slice[2]))
@@ -532,11 +601,11 @@ def parse(inp) :
 def analizarTexto(texto):
     contador = 0
     entrada = texto
-    instrucciones = parse(entrada.lower()) #ARBOL AST
+    instrucciones = parse(entrada) #ARBOL AST
     ast = Arbol(instrucciones)
     TSGlobal = TablaSimbolos()
     ast.setTSglobal(TSGlobal)
-    for error in errores:                   #CAPTURA DE ERRORES LEXICOS Y SINTACTICOS
+    for error in errores: #CAPTURA DE ERRORES LEXICOS Y SINTACTICOS
         ast.getExcepciones().append(error)
         ast.updateConsola(error.toString())
     if ast.getInstrucciones()!=None:
@@ -576,7 +645,7 @@ def analizarTexto(texto):
                 err = Excepcion("Semantico", "Sentencias fuera de Main", instruccion.fila, instruccion.columna)
                 ast.getExcepciones().append(err)
                 ast.updateConsola(err.toString())
-        return ast.getConsola()
+    return ast.getConsola()
 #INTERFAZ
 
 

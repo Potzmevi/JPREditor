@@ -18,7 +18,7 @@ class Case(Instruccion):
 
         nuevaTabla = TablaSimbolos(table)  # NUEVO ENTORNO
         for instruccion in self.instrucciones:
-            result = instruccion.interpretar(tree, nuevaTabla)  # EJECUTA INSTRUCCION ADENTRO DEL IF
+            result = instruccion.interpretar(tree, nuevaTabla)  # EJECUTA INSTRUCCION ADENTRO DEL CASE
             if isinstance(result, Excepcion):
                 tree.getExcepciones().append(result)
                 tree.updateConsola(result.toString())
