@@ -3,8 +3,10 @@ from tkinter import scrolledtext
 from tkinter import filedialog as FileDialog
 from tkinter import messagebox
 from tkinter import ttk
-from grammar import analizarTexto as compilar
-from grammar import getErrores as errores
+from gramatica import analizarTexto as compilar
+from gramatica import getErrores as errores
+from PIL import Image
+import os
 
 # Metodos
 # Actualizar lineas
@@ -32,6 +34,31 @@ def posicion(event=None):
 def llamarMetodos(event):
     posicion()
     lineas()
+    
+# Exportar errores
+def exportar_errores():
+    archivo = "tablaErrores.dot"
+    salida = "digraph errores {\n"
+    salida += "tbl [\n shape = plaintext\n"
+    salida += "label=<\n"
+    salida += "<table border=\"1\" cellborder=\"1\" cellspacing=\"1\" cellpadding=\"8\">\n"
+    salida += "<tr> <td colspan='5'>Reporte de Errores</td> </tr> \n"
+    salida += "<tr> <td> </td> <td>Tipo</td> <td>Descripcion</td> <td>Linea</td> <td>Columna</td> </tr> \n"
+    excepciones = errores()
+    cont = 1
+    for excepcion in excepciones:
+        salida += "<tr> <td>"+str(cont)+"</td> <td>"+excepcion.getTipo()+"</td> <td>"+excepcion.getDescripcion()+"</td> <td>"+str(excepcion.getFila())+"</td> <td>"+str(excepcion.getColumna())+"</td> </tr> \n"
+        cont += 1
+    salida += "</table>\n"
+    salida += ">];\n"
+    salida += "}"
+    
+    with open(archivo,'w') as f:
+        f.write(salida) 
+    
+    os.system('dot -Tpng '+archivo+' -o imagen.png')
+    os.startfile("imagen.png")
+    
 
 
 # Declaracion del tk
@@ -40,7 +67,7 @@ raiz.title("JPR Editor")
 # Frame principal
 frame = Frame(raiz, bg="gray60")
 frame.grid(sticky='news')
-# Canvas
+# Canvas`
 canvas = Canvas(frame, bg="gray60")
 canvas.grid(row=0, column=1)
 # Frame del canvas
@@ -91,11 +118,6 @@ tv.heading('Dimension', text='Dimension', anchor=CENTER)
 tv.heading('Valor', text='Valor', anchor=CENTER)
 tv.heading('Ambito', text='Ambito', anchor=CENTER)
 tv.heading('Referencias', text='Referencias', anchor=CENTER)
-tv.insert(parent='', index=0, iid=0, text='', values=('1','Vineet','Alpha'))
-tv.insert(parent='', index=1, iid=1, text='', values=('2','Anil','Bravo'))
-tv.insert(parent='', index=2, iid=2, text='', values=('3','Vinod','Charlie'))
-tv.insert(parent='', index=3, iid=3, text='', values=('4','Vimal','Delta'))
-tv.insert(parent='', index=4, iid=4, text='', values=('5','Manjeet','Echo'))
 tv.grid(column=0, row=5,padx=25,sticky="w")
 
 #Tabla Reporte de errores
@@ -216,7 +238,7 @@ new_item.add_command(label='Abrir',command=abrir)
 new_item.add_command(label='Guardar',command=guardar)
 new_item.add_command(label='Guardar Como', command=guardar_como)
 menu.add_cascade(label='Archivo', menu=new_item)
-menu.add_cascade(label='Reportes')
+menu.add_cascade(label='Reportes', command=exportar_errores)
 raiz.config(menu=menu)
 
 # Main loop

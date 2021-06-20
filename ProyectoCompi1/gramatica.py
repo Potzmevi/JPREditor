@@ -1,9 +1,3 @@
-''' 
-José Puac
-VACACIONES DE JUNIO 2020
-
-INTERPRETER SAMPLE  
-'''
 import re
 from tkinter.constants import CHAR
 from TS.Tipo import OperadorAritmetico, TIPO
@@ -432,6 +426,7 @@ def p_break(t) :
 def p_main(t) :
     'main_instr     : RMAIN PARA PARC LLAVEA instrucciones LLAVEC'
     t[0] = Main(t[5], t.lineno(1), find_column(input, t.slice[1]))
+    
 
 
 #///////////////////////////////////////FUNCION//////////////////////////////////////////////////
@@ -587,6 +582,9 @@ input = ''
 def getErrores():
     return errores
 
+def setErrores(self, errores):
+    self.errores = errores
+        
 def parse(inp) :
     global errores
     global lexer
@@ -614,13 +612,19 @@ def analizarTexto(texto):
                 ast.addFuncion(instruccion)     # GUARDAR LA FUNCION EN "MEMORIA" (EN EL ARBOL)
             if isinstance(instruccion, Declaracion) or isinstance(instruccion, Asignacion):
                 value = instruccion.interpretar(ast,TSGlobal)
-                if isinstance(value, Excepcion) :
-                    ast.getExcepciones().append(value)
-                    ast.updateConsola(value.toString())
-                if isinstance(value, Break): 
-                    err = Excepcion("Semantico", "Sentencia BREAK fuera de ciclo", instruccion.fila, instruccion.columna)
-                    ast.getExcepciones().append(err)
-                    ast.updateConsola(err.toString())
+                if value !=None:
+                    if isinstance(value, Excepcion) :
+                            ast.getExcepciones().append(value)
+                            ast.updateConsola(value.toString())
+                            errores.append(value)
+                    elif isinstance(value, Break): 
+                            err = Excepcion("Semantico", "Sentencia BREAK fuera de ciclo", instruccion.fila, instruccion.columna)
+                            ast.getExcepciones().append(err)
+                            errores.append(err)
+                            ast.updateConsola(err.toString())
+                    else:
+                        for error in value:
+                            errores.append(error)
         
         for instruccion in ast.getInstrucciones():      # 2DA PASADA (MAIN)
            
@@ -629,21 +633,29 @@ def analizarTexto(texto):
                 if contador == 2: # VERIFICAR LA DUPLICIDAD
                     err = Excepcion("Semantico", "Existen 2 funciones Main", instruccion.fila, instruccion.columna)
                     ast.getExcepciones().append(err)
+                    errores.append(err)
                     ast.updateConsola(err.toString())
                     break
                 value = instruccion.interpretar(ast,TSGlobal)
-                if isinstance(value, Excepcion) :
-                    ast.getExcepciones().append(value)
-                    ast.updateConsola(value.toString())
-                if isinstance(value, Break): 
-                    err = Excepcion("Semantico", "Sentencia BREAK fuera de ciclo", instruccion.fila, instruccion.columna)
-                    ast.getExcepciones().append(err)
-                    ast.updateConsola(err.toString())
+                if value !=None:
+                    if isinstance(value, Excepcion) :
+                                ast.getExcepciones().append(value)
+                                ast.updateConsola(value.toString())
+                                errores.append(value)
+                    elif isinstance(value, Break): 
+                                err = Excepcion("Semantico", "Sentencia BREAK fuera de ciclo", instruccion.fila, instruccion.columna)
+                                ast.getExcepciones().append(err)
+                                errores.append(err)
+                                ast.updateConsola(err.toString())
+                    else:
+                            for error in value:
+                                errores.append(error)
 
         for instruccion in ast.getInstrucciones():    # 3ERA PASADA (SENTENCIAS FUERA DE MAIN)
             if not (isinstance(instruccion, Main) or isinstance(instruccion, Declaracion) or isinstance(instruccion, Asignacion) or isinstance(instruccion, Funcion)):
                 err = Excepcion("Semantico", "Sentencias fuera de Main", instruccion.fila, instruccion.columna)
                 ast.getExcepciones().append(err)
+                errores.append(err)
                 ast.updateConsola(err.toString())
     return ast.getConsola()
 #INTERFAZ

@@ -2,7 +2,6 @@
 
 from TS.Tipo import TIPO
 from TS.Excepcion import Excepcion
-from grammar import errores
 
 class TablaSimbolos:
     def __init__(self, anterior = None):
@@ -12,7 +11,6 @@ class TablaSimbolos:
     def setTabla(self, simbolo):      # Agregar una variable
         if simbolo.id.lower() in self.tabla :
             return Excepcion("Semantico", "Variable " + simbolo.id + " ya existe", simbolo.fila, simbolo.columna)
-            
         else:
             self.tabla[simbolo.id.lower()] = simbolo
             return None

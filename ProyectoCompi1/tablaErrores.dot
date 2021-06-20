@@ -1,0 +1,14 @@
+digraph errores {
+tbl [
+ shape = plaintext
+label=<
+<table border="1" cellborder="1" cellspacing="1" cellpadding="8">
+<tr> <td colspan='5'>Reporte de Errores</td> </tr> 
+<tr> <td> </td> <td>Tipo</td> <td>Descripcion</td> <td>Linea</td> <td>Columna</td> </tr> 
+<tr> <td>1</td> <td>Semantico</td> <td>Variable GlObAl_A ya existe</td> <td>19</td> <td>5</td> </tr> 
+<tr> <td>2</td> <td>Semantico</td> <td>Variable global_comilla_simple no encontrada.</td> <td>46</td> <td>9</td> </tr> 
+<tr> <td>3</td> <td>Semantico</td> <td>Variable i ya existe</td> <td>327</td> <td>11</td> </tr> 
+<tr> <td>4</td> <td>Semantico</td> <td>Variable i ya existe</td> <td>375</td> <td>11</td> </tr> 
+</table>
+>];
+}
