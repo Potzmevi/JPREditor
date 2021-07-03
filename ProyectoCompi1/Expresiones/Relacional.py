@@ -1,6 +1,7 @@
 from Abstract.Instruccion import Instruccion
 from TS.Excepcion import Excepcion
 from TS.Tipo import TIPO, OperadorRelacional
+from Abstract.NodoAST import NodoAST
 
 class Relacional(Instruccion):
     def __init__(self, operador, OperacionIzq, OperacionDer, fila, columna):
@@ -193,3 +194,11 @@ class Relacional(Instruccion):
         else:
             return None
         
+    def getNodo(self):
+        nodo = NodoAST("RELACIONAL")
+        nodo.agregarHijoNodo(self.OperacionIzq.getNodo())
+        nodo.agregarHijo(str(self.operador))
+        nodo.agregarHijoNodo(self.OperacionDer.getNodo())
+
+
+        return nodo

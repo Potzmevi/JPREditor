@@ -1,3 +1,7 @@
+from TS.Simbolo import Simbolo
+from Nativas.TypeOf import TypeOf
+from Nativas.Round import Round
+from Nativas.Length import Length
 import re
 from tkinter.constants import CHAR
 from TS.Tipo import OperadorAritmetico, TIPO
@@ -13,7 +17,12 @@ from Expresiones.Relacional import Relacional
 from Expresiones.Logica import Logica
 import ply.yacc as yacc
 import ply.lex as lex
+import sys
+
+sys.setrecursionlimit(3000)
 errores = []
+simbolos=[]
+funciones=[]
 reservadas = {
     'int'   : 'RINT',
     'double' : 'RFLOAT',
@@ -34,14 +43,9 @@ reservadas = {
     'continue' : 'RCONTINUE',
     'func' : 'RFUNC',
     'read' : 'RREAD',
-    'toLower' : 'RTOLOWER',
-    'toUpper' : 'RTOUPPER',
-    'length' : 'RLENGTH',
-    'truncate' : 'RTRUNCATE',
-    'round' : 'RROUND',
-    'typeof' : 'RTYPEOF',
     'main' : 'RMAIN',
     'return' : 'RRETURN',
+    'new'       : 'RNEW'
 }
 
 tokens  = [
@@ -74,7 +78,10 @@ tokens  = [
     'BOOLEANO',
     'CHARACTER',
     'ID',
-    'DOSPUNTOS'
+    'COMA',
+    'DOSPUNTOS',
+    'CORA',
+    'CORC'
 ] + list(reservadas.values())
 
 # Tokens
@@ -102,6 +109,9 @@ t_AND           = r'&&'
 t_OR            = r'\|\|'
 t_NOT           = r'!'
 t_DOSPUNTOS     = r':'
+t_COMA          = r','
+t_CORA          = r'\['
+t_CORC          = r'\]'
 
 
 def t_DECIMAL(t):
@@ -217,6 +227,8 @@ precedence = (
 # Definición de la gramática
 
 #Abstract
+import os
+from Abstract.NodoAST import NodoAST
 from Abstract.Instruccion import Instruccion
 from Instrucciones.Imprimir import Imprimir
 from Expresiones.Primitivos import Primitivos
@@ -236,6 +248,17 @@ from Instrucciones.Main import Main
 from Instrucciones.For import For
 from Instrucciones.Switch import Switch
 from Instrucciones.Case import Case
+from Instrucciones.Return import Return
+from Nativas.ToLower import ToLower
+from Nativas.ToUpper import ToUpper
+from Expresiones.Read import Read
+from Expresiones.Casteo import Casteo
+from Instrucciones.Continue import Continue
+from Nativas.Length import Length
+from Nativas.Truncate import Truncate
+from Instrucciones.DeclaracionArr1 import DeclaracionArr1
+from Expresiones.AccesoArreglo import AccesoArreglo
+from Instrucciones.ModificarArreglo import ModificarArreglo
 
 def p_init(t) :
     'init            : instrucciones'
@@ -266,12 +289,16 @@ def p_instruccion(t) :
                         | if_instr
                         | while_instr
                         | break_instr finins
+                        | continue_instr finins
                         | main_instr
                         | funcion_instr
                         | llamada_instr finins
                         | asignacion2_instr finins
                         | for_instr finins
-                        | switch_inst finins'''
+                        | switch_inst finins
+                        | return_instr finins
+                        | declArr_instr finins
+                        | modArr_instr finins'''
     t[0] = t[1]
     t[0] = t[1]
     
@@ -311,7 +338,11 @@ def p_declaracion_nula(t) :
 def p_asignacion(t) :
     'asignacion_instr     : ID IGUAL expresion'
     t[0] = Asignacion(t[1], t[3], t.lineno(1), find_column(input, t.slice[1]))
-    
+
+def p_expresion_Arreglo(t):
+    '''expresion : ID lista_expresiones'''
+    t[0] = AccesoArreglo(t[1], t[2], t.lineno(1), find_column(input, t.slice[1]))
+
 
 #//////////////////////////////////////ASIGNACION 2//////////////////////////////////////////////////
 
@@ -420,6 +451,12 @@ def p_while(t) :
 def p_break(t) :
     'break_instr     : RBREAK'
     t[0] = Break(t.lineno(1), find_column(input, t.slice[1]))
+    
+#///////////////////////////////////////CONTINUE//////////////////////////////////////////////////
+
+def p_continue(t) :
+    'continue_instr     : RCONTINUE'
+    t[0] = Continue(t.lineno(1), find_column(input, t.slice[1]))
 
 #///////////////////////////////////////MAIN//////////////////////////////////////////////////
 
@@ -431,16 +468,61 @@ def p_main(t) :
 
 #///////////////////////////////////////FUNCION//////////////////////////////////////////////////
 
-def p_funcion(t) :
+def p_funcion_1(t) :
+    'funcion_instr     : RFUNC ID PARA parametros PARC LLAVEA instrucciones LLAVEC'
+    t[0] = Funcion(t[2], t[4], t[7], t.lineno(1), find_column(input, t.slice[1]))
+
+def p_funcion_2(t) :
     'funcion_instr     : RFUNC ID PARA PARC LLAVEA instrucciones LLAVEC'
-    t[0] = Funcion(t[2], t[6], t.lineno(1), find_column(input, t.slice[1]))
+    t[0] = Funcion(t[2], [], t[6], t.lineno(1), find_column(input, t.slice[1]))
+
+#///////////////////////////////////////PARAMETROS//////////////////////////////////////////////////
+
+def p_parametros_1(t) :
+    'parametros     : parametros COMA parametro'
+    t[1].append(t[3])
+    t[0] = t[1]
+    
+def p_parametros_2(t) :
+    'parametros    : parametro'
+    t[0] = [t[1]]
+
+#///////////////////////////////////////PARAMETRO//////////////////////////////////////////////////
+
+def p_parametro(t) :
+    'parametro     : tipo ID'
+    t[0] = {'tipo':t[1],'identificador':t[2]}
 
 #///////////////////////////////////////LLAMADA A FUNCION//////////////////////////////////////////////////
 
-def p_llamada(t) :
-    'llamada_instr     : ID PARA PARC'
-    t[0] = Llamada(t[1], t.lineno(1), find_column(input, t.slice[1]))
+def p_return(t) :
+    'return_instr     : RRETURN expresion'
+    t[0] = Return(t[2], t.lineno(1), find_column(input, t.slice[1]))
     
+def p_llamada1(t) :
+    'llamada_instr     : ID PARA PARC'
+    t[0] = Llamada(t[1], [], t.lineno(1), find_column(input, t.slice[1]))
+
+def p_llamada2(t) :
+    'llamada_instr     : ID PARA parametros_llamada PARC'
+    t[0] = Llamada(t[1], t[3], t.lineno(1), find_column(input, t.slice[1]))
+
+#///////////////////////////////////////PARAMETROS LLAMADA A FUNCION//////////////////////////////////////////////////
+
+def p_parametrosLL_1(t) :
+    'parametros_llamada     : parametros_llamada COMA parametro_llamada'
+    t[1].append(t[3])
+    t[0] = t[1]
+    
+def p_parametrosLL_2(t) :
+    'parametros_llamada    : parametro_llamada'
+    t[0] = [t[1]]
+
+#///////////////////////////////////////PARAMETRO LLAMADA A FUNCION//////////////////////////////////////////////////
+
+def p_parametroLL(t) :
+    'parametro_llamada     : expresion'
+    t[0] = t[1]
 
 
 #///////////////////////////////////////TIPO//////////////////////////////////////////////////
@@ -475,6 +557,41 @@ def p_tipo_for(t) :
     elif t[1].lower() == 'var':
         t[0] = TIPO.VAR
 
+
+#///////////////////////////////////////DECLARACION ARREGLOS//////////////////////////////////////////////////
+
+def p_declArr(t) :
+    '''declArr_instr     : tipo1'''
+    t[0] = t[1]
+
+def p_tipo1(t) :
+    '''tipo1     : tipo lista_Dim ID IGUAL RNEW tipo lista_expresiones'''
+    t[0] = DeclaracionArr1(t[1], t[2], t[3], t[6], t[7], t.lineno(3), find_column(input, t.slice[3]))
+    
+def p_lista_Dim1(t) :
+    'lista_Dim     : lista_Dim CORA CORC'
+    t[0] = t[1] + 1
+
+def p_lista_Dim2(t) :
+    'lista_Dim    : CORA CORC'
+    t[0] = 1
+
+def p_lista_expresiones_1(t) :
+    '''lista_expresiones     : lista_expresiones CORA expresion CORC'''
+    t[1].append(t[3])
+    t[0] = t[1]
+
+def p_lista_expresiones_2(t) :
+    '''lista_expresiones    : CORA expresion CORC'''
+    t[0] = [t[2]]
+
+    
+#///////////////////////////////////////MODIFICACION ARREGLOS//////////////////////////////////////////////////
+
+
+def p_modArr(t) :
+    '''modArr_instr     :  ID lista_expresiones IGUAL expresion'''
+    t[0] = ModificarArreglo(t[1], t[2], t[4], t.lineno(1), find_column(input, t.slice[1]))
 
 #///////////////////////////////////////EXPRESION//////////////////////////////////////////////////
 
@@ -530,6 +647,15 @@ def p_expresion_binaria(t):
     elif t[2] == '||':
         t[0] = Logica(OperadorLogico.OR, t[1],t[3], t.lineno(2), find_column(input, t.slice[2]))
 
+
+def p_expresion_read(t):
+    '''expresion : RREAD PARA PARC'''
+    t[0] = Read(t.lineno(1), find_column(input, t.slice[1]))
+
+def p_expresion_cast(t):
+    '''expresion : PARA tipo PARC expresion'''
+    t[0] = Casteo(t[2], t[4], t.lineno(1), find_column(input, t.slice[1]))
+
 def p_expresion_unaria(t):
     '''
     expresion : MENOS expresion %prec UMENOS 
@@ -570,7 +696,10 @@ def p_primitivo_cadena(t):
     '''expresion : CADENA'''
     t[0] = Primitivos(TIPO.CADENA,str(t[1]).replace('\\n', '\n'), t.lineno(1), find_column(input, t.slice[1]))
     
-    
+def p_expresion_llamada(t):
+    '''expresion : llamada_instr'''
+    t[0] = t[1]
+
 def p_primitivo_null(t):
     '''expresion : RNULL'''
     t[0] = Primitivos(TIPO.NULO,None, t.lineno(1), find_column(input, t.slice[1]))
@@ -582,19 +711,67 @@ input = ''
 def getErrores():
     return errores
 
+def getSimbolos():
+    return simbolos
+
+def getFunciones():
+    return funciones
+
 def setErrores(self, errores):
     self.errores = errores
         
 def parse(inp) :
+    global simbolos
+    global funciones
     global errores
     global lexer
     global parser
     errores = []
+    funciones= []
+    simbolos=[]
     lexer = lex.lex(reflags= re.IGNORECASE)
     parser = yacc.yacc()
     global input
     input = inp
     return parser.parse(inp)
+
+def crearNativas(ast):          # CREACION Y DECLARACION DE LAS FUNCIONES NATIVAS
+    nombre = "toupper"
+    parametros = [{'tipo':TIPO.CADENA,'identificador':'toUpper##Param1'}]
+    instrucciones = []
+    toUpper = ToUpper(nombre, parametros, instrucciones, -1, -1)
+    ast.addFuncion(toUpper)     # GUARDAR LA FUNCION EN "MEMORIA" (EN EL ARBOL)
+
+    nombre = "tolower"
+    parametros = [{'tipo':TIPO.CADENA,'identificador':'toLower##Param1'}]
+    instrucciones = []
+    toLower = ToLower(nombre, parametros, instrucciones, -1, -1)
+    ast.addFuncion(toLower)     # GUARDAR LA FUNCION EN "MEMORIA" (EN EL ARBOL)
+    
+    nombre = "length"
+    parametros = [{'tipo':TIPO.CADENA,'identificador':'length##Param1'}]
+    instrucciones = []
+    length = Length(nombre, parametros, instrucciones, -1, -1)
+    ast.addFuncion(length)     # GUARDAR LA FUNCION EN "MEMORIA" (EN EL ARBOL)
+    
+    nombre = "truncate"
+    parametros = [{'tipo':TIPO.DECIMAL,'identificador':'truncate##Param1'}]
+    instrucciones = []
+    truncate = Truncate(nombre, parametros, instrucciones, -1, -1)
+    ast.addFuncion(truncate)     # GUARDAR LA FUNCION EN "MEMORIA" (EN EL ARBOL)
+    
+    nombre = "round"
+    parametros = [{'tipo':TIPO.DECIMAL,'identificador':'round##Param1'}]
+    instrucciones = []
+    round = Round(nombre, parametros, instrucciones, -1, -1)
+    ast.addFuncion(round)     # GUARDAR LA FUNCION EN "MEMORIA" (EN EL ARBOL)
+    
+    nombre = "typeof"
+    parametros = [{'tipo':TIPO.DECIMAL,'identificador':'typeof##Param1'}]
+    instrucciones = []
+    typeof = TypeOf(nombre, parametros, instrucciones, -1, -1)
+    ast.addFuncion(typeof)     # GUARDAR LA FUNCION EN "MEMORIA" (EN EL ARBOL)
+    
 
 def analizarTexto(texto):
     contador = 0
@@ -603,14 +780,18 @@ def analizarTexto(texto):
     ast = Arbol(instrucciones)
     TSGlobal = TablaSimbolos()
     ast.setTSglobal(TSGlobal)
+    if len(TSGlobal.getSimbolos())!=0:
+        TSGlobal.vaciarSimbolos()
+    crearNativas(ast)
     for error in errores: #CAPTURA DE ERRORES LEXICOS Y SINTACTICOS
         ast.getExcepciones().append(error)
         ast.updateConsola(error.toString())
     if ast.getInstrucciones()!=None:
         for instruccion in ast.getInstrucciones():      # 1ERA PASADA (DECLARACIONES Y ASIGNACIONES)
+            TSGlobal.setEntorno("Global")
             if isinstance(instruccion, Funcion):
                 ast.addFuncion(instruccion)     # GUARDAR LA FUNCION EN "MEMORIA" (EN EL ARBOL)
-            if isinstance(instruccion, Declaracion) or isinstance(instruccion, Asignacion):
+            if isinstance(instruccion, Declaracion) or isinstance(instruccion, Asignacion) or isinstance(instruccion, DeclaracionArr1) or isinstance(instruccion, ModificarArreglo):
                 value = instruccion.interpretar(ast,TSGlobal)
                 if value !=None:
                     if isinstance(value, Excepcion) :
@@ -622,12 +803,17 @@ def analizarTexto(texto):
                             ast.getExcepciones().append(err)
                             errores.append(err)
                             ast.updateConsola(err.toString())
+                    elif isinstance(value, Continue): 
+                            err = Excepcion("Semantico", "Sentencia CONTINUE fuera de ciclo", instruccion.fila, instruccion.columna)
+                            ast.getExcepciones().append(err)
+                            errores.append(err)
+                            ast.updateConsola(err.toString())
                     else:
                         for error in value:
                             errores.append(error)
         
         for instruccion in ast.getInstrucciones():      # 2DA PASADA (MAIN)
-           
+            TSGlobal.setEntorno("Main")
             if isinstance(instruccion, Main):
                 contador += 1
                 if contador == 2: # VERIFICAR LA DUPLICIDAD
@@ -647,16 +833,42 @@ def analizarTexto(texto):
                                 ast.getExcepciones().append(err)
                                 errores.append(err)
                                 ast.updateConsola(err.toString())
+                    elif isinstance(value, Continue): 
+                                err = Excepcion("Semantico", "Sentencia CONTINUE fuera de ciclo", instruccion.fila, instruccion.columna)
+                                ast.getExcepciones().append(err)
+                                errores.append(err)
+                                ast.updateConsola(err.toString())
+                    elif isinstance(value, Return): 
+                        err = Excepcion("Semantico", "Sentencia RETURN fuera de ciclo", instruccion.fila, instruccion.columna)
+                        ast.getExcepciones().append(err)
+                        ast.updateConsola(err.toString())
+                        errores.append(err)
                     else:
                             for error in value:
                                 errores.append(error)
 
         for instruccion in ast.getInstrucciones():    # 3ERA PASADA (SENTENCIAS FUERA DE MAIN)
-            if not (isinstance(instruccion, Main) or isinstance(instruccion, Declaracion) or isinstance(instruccion, Asignacion) or isinstance(instruccion, Funcion)):
+            if not (isinstance(instruccion, Main) or isinstance(instruccion, Declaracion) or isinstance(instruccion, Asignacion) or isinstance(instruccion, Funcion)  or isinstance(instruccion, DeclaracionArr1) or isinstance(instruccion, ModificarArreglo)):
                 err = Excepcion("Semantico", "Sentencias fuera de Main", instruccion.fila, instruccion.columna)
                 ast.getExcepciones().append(err)
                 errores.append(err)
                 ast.updateConsola(err.toString())
+        init = NodoAST("RAIZ")
+        instr = NodoAST("INSTRUCCIONES")
+        for instruccion in ast.getInstrucciones():
+            instr.agregarHijoNodo(instruccion.getNodo())
+        init.agregarHijoNodo(instr)
+        grafo = ast.getDot(init) #DEVUELVE EL CODIGO GRAPHVIZ DEL AST
+        dirname = os.path.dirname(__file__)
+        direcc = os.path.join(dirname, 'ast.dot')
+        arch = open(direcc, "w+")
+        arch.write(grafo)
+        arch.close()
+        os.system('dot -T pdf -o ast.pdf ast.dot')
+    for simbolo in TSGlobal.getSimbolos():
+        simbolos.append(simbolo)
+    for funcion in ast.getFunciones():
+        funciones.append(funcion)
     return ast.getConsola()
 #INTERFAZ
 

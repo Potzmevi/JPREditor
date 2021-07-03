@@ -1,8 +1,11 @@
+from Instrucciones.Return import Return
 from Abstract.Instruccion import Instruccion
 from TS.Excepcion import Excepcion
 from TS.Tipo import TIPO
 from TS.TablaSimbolos import TablaSimbolos
 from Instrucciones.Break import Break
+from Abstract.NodoAST import NodoAST
+from Instrucciones.Continue import Continue
 
 class While(Instruccion):
     def __init__(self, condicion, instrucciones, fila, columna):
@@ -20,12 +23,24 @@ class While(Instruccion):
                 if bool(condicion) == True:   # VERIFICA SI ES VERDADERA LA CONDICION
                     nuevaTabla = TablaSimbolos(table)       #NUEVO ENTORNO
                     for instruccion in self.instrucciones:
+                        nuevaTabla.setEntorno("While")
                         result = instruccion.interpretar(tree, nuevaTabla) #EJECUTA INSTRUCCION ADENTRO DEL IF
                         if isinstance(result, Excepcion) :
                             tree.getExcepciones().append(result)
                             tree.updateConsola(result.toString())
                         if isinstance(result, Break): return None
+                        if isinstance(result, Continue): break
+                        if isinstance(result, Return): return result
                 else:
                     break
             else:
-                return Excepcion("Semantico", "Tipo de dato no booleano en While.", self.fila, self.columna)
+                return Excepcion("Semantico", "Tipo de dato no booleano en IF.", self.fila, self.columna)
+    
+    def getNodo(self):
+        nodo = NodoAST("WHILE")
+
+        instrucciones = NodoAST("INSTRUCCIONES")
+        for instr in self.instrucciones:
+            instrucciones.agregarHijoNodo(instr.getNodo())
+        nodo.agregarHijoNodo(instrucciones)
+        return nodo 

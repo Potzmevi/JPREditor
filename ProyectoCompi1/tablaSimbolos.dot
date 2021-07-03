@@ -1,0 +1,144 @@
+digraph simbolos {
+tbl [
+ shape = plaintext, color=cornflowerblue,fillcolor=beige, style=filled,fontname = "helvetica"
+label=<
+<table  >
+<tr> <td colspan='10'>Tabla de simbolos</td> </tr> 
+<tr> <td> </td> <td>Nombre</td> <td>Tipo</td> <td>Tipo2</td> <td>Ambito</td> <td>Valor</td> <td>Linea</td> <td>Columna</td> </tr> 
+<tr> <td>1</td> <td>global_a</td> <td>Variable</td> <td>TIPO.VAR</td> <td>Global</td> <td>None</td> <td>12</td> <td>5</td></tr> 
+<tr> <td>2</td> <td>global_b</td> <td>Variable</td> <td>TIPO.VAR</td> <td>Global</td> <td>None</td> <td>13</td> <td>5</td></tr> 
+<tr> <td>3</td> <td>global_int</td> <td>Variable</td> <td>TIPO.ENTERO</td> <td>Global</td> <td>25</td> <td>14</td> <td>5</td></tr> 
+<tr> <td>4</td> <td>global_dou</td> <td>Variable</td> <td>TIPO.DECIMAL</td> <td>Global</td> <td>25.0</td> <td>15</td> <td>5</td></tr> 
+<tr> <td>5</td> <td>global_boo</td> <td>Variable</td> <td>TIPO.BOOLEANO</td> <td>Global</td> <td>True</td> <td>16</td> <td>5</td></tr> 
+<tr> <td>6</td> <td>global_cha</td> <td>Variable</td> <td>TIPO.CHARACTER</td> <td>Global</td> <td>g</td> <td>17</td> <td>5</td></tr> 
+<tr> <td>7</td> <td>global_cad</td> <td>Variable</td> <td>TIPO.CADENA</td> <td>Global</td> <td>cadena</td> <td>18</td> <td>5</td></tr> 
+<tr> <td>8</td> <td>global_salto</td> <td>Variable</td> <td>TIPO.CADENA</td> <td>Global</td> <td>Cadena con
+salto de línea</td> <td>20</td> <td>5</td></tr> 
+<tr> <td>9</td> <td>global_barra</td> <td>Variable</td> <td>TIPO.CADENA</td> <td>Global</td> <td>Cadena con \ barra invertida</td> <td>21</td> <td>5</td></tr> 
+<tr> <td>10</td> <td>global_comilla_doble</td> <td>Variable</td> <td>TIPO.CADENA</td> <td>Global</td> <td>Cadena con comilla doble</td> <td>22</td> <td>5</td></tr> 
+<tr> <td>11</td> <td>global_tab</td> <td>Variable</td> <td>TIPO.CADENA</td> <td>Global</td> <td>Cadena con 	 tabulación</td> <td>23</td> <td>5</td></tr> 
+<tr> <td>12</td> <td>global_comilla_simple</td> <td>Variable</td> <td>TIPO.CADENA</td> <td>Global</td> <td>Cadena con 'comilla simple'</td> <td>24</td> <td>5</td></tr> 
+<tr> <td>13</td> <td>var1</td> <td>Variable</td> <td>TIPO.ENTERO</td> <td>Global</td> <td>1</td> <td>25</td> <td>5</td></tr> 
+<tr> <td>14</td> <td>var1</td> <td>Variable</td> <td>TIPO.ENTERO</td> <td>Main</td> <td>0</td> <td>32</td> <td>7</td></tr> 
+<tr> <td>15</td> <td>n1</td> <td>Variable</td> <td>TIPO.ENTERO</td> <td>Main</td> <td>1</td> <td>40</td> <td>7</td></tr> 
+<tr> <td>16</td> <td>n2</td> <td>Variable</td> <td>TIPO.ENTERO</td> <td>Main</td> <td>1</td> <td>41</td> <td>7</td></tr> 
+<tr> <td>17</td> <td>n3</td> <td>Variable</td> <td>TIPO.ENTERO</td> <td>Main</td> <td>1</td> <td>42</td> <td>7</td></tr> 
+<tr> <td>18</td> <td>n4</td> <td>Variable</td> <td>TIPO.ENTERO</td> <td>Main</td> <td>1</td> <td>43</td> <td>7</td></tr> 
+<tr> <td>19</td> <td>str1</td> <td>Variable</td> <td>TIPO.CADENA</td> <td>Main</td> <td>Voy a ganar Compiladores</td> <td>44</td> <td>7</td></tr> 
+<tr> <td>20</td> <td>str2</td> <td>Variable</td> <td>TIPO.CADENA</td> <td>Main</td> <td>Voy a ganar Compiladores</td> <td>45</td> <td>7</td></tr> 
+<tr> <td>21</td> <td>str3</td> <td>Variable</td> <td>TIPO.CADENA</td> <td>Main</td> <td>Voy a ganar Compiladores</td> <td>46</td> <td>7</td></tr> 
+<tr> <td>22</td> <td>str4</td> <td>Variable</td> <td>TIPO.CADENA</td> <td>Main</td> <td>Voy a ganar Compiladores</td> <td>47</td> <td>7</td></tr> 
+<tr> <td>23</td> <td>db1</td> <td>Variable</td> <td>TIPO.DECIMAL</td> <td>Main</td> <td>0.0</td> <td>48</td> <td>7</td></tr> 
+<tr> <td>24</td> <td>db2</td> <td>Variable</td> <td>TIPO.DECIMAL</td> <td>Main</td> <td>0.0</td> <td>49</td> <td>7</td></tr> 
+<tr> <td>25</td> <td>db3</td> <td>Variable</td> <td>TIPO.DECIMAL</td> <td>Main</td> <td>0.0</td> <td>50</td> <td>7</td></tr> 
+<tr> <td>26</td> <td>db4</td> <td>Variable</td> <td>TIPO.DECIMAL</td> <td>Main</td> <td>0.0</td> <td>51</td> <td>7</td></tr> 
+<tr> <td>27</td> <td>chr1</td> <td>Variable</td> <td>TIPO.CHARACTER</td> <td>Main</td> <td>s</td> <td>52</td> <td>7</td></tr> 
+<tr> <td>28</td> <td>chr2</td> <td>Variable</td> <td>TIPO.CHARACTER</td> <td>Main</td> <td>s</td> <td>53</td> <td>7</td></tr> 
+<tr> <td>29</td> <td>chr3</td> <td>Variable</td> <td>TIPO.CHARACTER</td> <td>Main</td> <td>s</td> <td>54</td> <td>7</td></tr> 
+<tr> <td>30</td> <td>chr4</td> <td>Variable</td> <td>TIPO.CHARACTER</td> <td>Main</td> <td>s</td> <td>55</td> <td>7</td></tr> 
+<tr> <td>31</td> <td>suma_1</td> <td>Variable</td> <td>TIPO.ENTERO</td> <td>Main</td> <td>30</td> <td>84</td> <td>7</td></tr> 
+<tr> <td>32</td> <td>suma_2</td> <td>Variable</td> <td>TIPO.DECIMAL</td> <td>Main</td> <td>30.0</td> <td>86</td> <td>7</td></tr> 
+<tr> <td>33</td> <td>suma_3</td> <td>Variable</td> <td>TIPO.ENTERO</td> <td>Main</td> <td>1</td> <td>88</td> <td>7</td></tr> 
+<tr> <td>34</td> <td>suma_4</td> <td>Variable</td> <td>TIPO.CADENA</td> <td>Main</td> <td>gb</td> <td>90</td> <td>7</td></tr> 
+<tr> <td>35</td> <td>suma_5</td> <td>Variable</td> <td>TIPO.CADENA</td> <td>Main</td> <td>cadena_extra</td> <td>92</td> <td>7</td></tr> 
+<tr> <td>36</td> <td>n157</td> <td>Variable</td> <td>TIPO.DECIMAL</td> <td>Main</td> <td>3.1</td> <td>95</td> <td>7</td></tr> 
+<tr> <td>37</td> <td>resta_1</td> <td>Variable</td> <td>TIPO.ENTERO</td> <td>Main</td> <td>20</td> <td>105</td> <td>7</td></tr> 
+<tr> <td>38</td> <td>resta_2</td> <td>Variable</td> <td>TIPO.DECIMAL</td> <td>Main</td> <td>20.0</td> <td>107</td> <td>7</td></tr> 
+<tr> <td>39</td> <td>resta_3</td> <td>Variable</td> <td>TIPO.ENTERO</td> <td>Main</td> <td>0</td> <td>109</td> <td>7</td></tr> 
+<tr> <td>40</td> <td>resta_4</td> <td>Variable</td> <td>TIPO.DECIMAL</td> <td>Main</td> <td>0.0</td> <td>111</td> <td>7</td></tr> 
+<tr> <td>41</td> <td>mult_1</td> <td>Variable</td> <td>TIPO.ENTERO</td> <td>Main</td> <td>50</td> <td>116</td> <td>7</td></tr> 
+<tr> <td>42</td> <td>mult_2</td> <td>Variable</td> <td>TIPO.DECIMAL</td> <td>Main</td> <td>50.0</td> <td>118</td> <td>7</td></tr> 
+<tr> <td>43</td> <td>mult_3</td> <td>Variable</td> <td>TIPO.DECIMAL</td> <td>Main</td> <td>625.0</td> <td>120</td> <td>7</td></tr> 
+<tr> <td>44</td> <td>div_1</td> <td>Variable</td> <td>TIPO.DECIMAL</td> <td>Main</td> <td>1.0</td> <td>125</td> <td>7</td></tr> 
+<tr> <td>45</td> <td>div_2</td> <td>Variable</td> <td>TIPO.DECIMAL</td> <td>Main</td> <td>1.0</td> <td>127</td> <td>7</td></tr> 
+<tr> <td>46</td> <td>div_3</td> <td>Variable</td> <td>TIPO.DECIMAL</td> <td>Main</td> <td>1.0</td> <td>129</td> <td>7</td></tr> 
+<tr> <td>47</td> <td>mod_1</td> <td>Variable</td> <td>TIPO.DECIMAL</td> <td>Main</td> <td>1</td> <td>134</td> <td>7</td></tr> 
+<tr> <td>48</td> <td>mod_2</td> <td>Variable</td> <td>TIPO.DECIMAL</td> <td>Main</td> <td>1.0</td> <td>136</td> <td>7</td></tr> 
+<tr> <td>49</td> <td>mod_3</td> <td>Variable</td> <td>TIPO.DECIMAL</td> <td>Main</td> <td>1.0</td> <td>138</td> <td>7</td></tr> 
+<tr> <td>50</td> <td>neg_1</td> <td>Variable</td> <td>TIPO.ENTERO</td> <td>Main</td> <td>-25</td> <td>143</td> <td>7</td></tr> 
+<tr> <td>51</td> <td>neg_2</td> <td>Variable</td> <td>TIPO.DECIMAL</td> <td>Main</td> <td>-25.0</td> <td>145</td> <td>7</td></tr> 
+<tr> <td>52</td> <td>n400</td> <td>Variable</td> <td>TIPO.DECIMAL</td> <td>Main</td> <td>-299.0</td> <td>148</td> <td>7</td></tr> 
+<tr> <td>53</td> <td>n300</td> <td>Variable</td> <td>TIPO.DECIMAL</td> <td>Main</td> <td>70.0</td> <td>149</td> <td>7</td></tr> 
+<tr> <td>54</td> <td>a</td> <td>Variable</td> <td>TIPO.DECIMAL</td> <td>Main</td> <td>62.0</td> <td>159</td> <td>7</td></tr> 
+<tr> <td>55</td> <td>b</td> <td>Variable</td> <td>TIPO.DECIMAL</td> <td>Main</td> <td>0.0</td> <td>161</td> <td>7</td></tr> 
+<tr> <td>56</td> <td>c</td> <td>Variable</td> <td>TIPO.DECIMAL</td> <td>Main</td> <td>-19.0</td> <td>163</td> <td>7</td></tr> 
+<tr> <td>57</td> <td>d</td> <td>Variable</td> <td>TIPO.DECIMAL</td> <td>Main</td> <td>16.0</td> <td>165</td> <td>7</td></tr> 
+<tr> <td>58</td> <td>aritmetica1</td> <td>Variable</td> <td>TIPO.DECIMAL</td> <td>Main</td> <td>-7.0</td> <td>177</td> <td>7</td></tr> 
+<tr> <td>59</td> <td>aritmetica2</td> <td>Variable</td> <td>TIPO.ENTERO</td> <td>Main</td> <td>-10</td> <td>178</td> <td>7</td></tr> 
+<tr> <td>60</td> <td>aritmetica3</td> <td>Variable</td> <td>TIPO.DECIMAL</td> <td>Main</td> <td>-20.0</td> <td>180</td> <td>7</td></tr> 
+<tr> <td>61</td> <td>igu_1</td> <td>Variable</td> <td>TIPO.BOOLEANO</td> <td>Main</td> <td>True</td> <td>192</td> <td>7</td></tr> 
+<tr> <td>62</td> <td>igu_2</td> <td>Variable</td> <td>TIPO.BOOLEANO</td> <td>Main</td> <td>False</td> <td>194</td> <td>7</td></tr> 
+<tr> <td>63</td> <td>igu_3</td> <td>Variable</td> <td>TIPO.BOOLEANO</td> <td>Main</td> <td>True</td> <td>196</td> <td>7</td></tr> 
+<tr> <td>64</td> <td>igu_4</td> <td>Variable</td> <td>TIPO.BOOLEANO</td> <td>Main</td> <td>False</td> <td>198</td> <td>7</td></tr> 
+<tr> <td>65</td> <td>igu_5</td> <td>Variable</td> <td>TIPO.BOOLEANO</td> <td>Main</td> <td>True</td> <td>200</td> <td>7</td></tr> 
+<tr> <td>66</td> <td>dif_1</td> <td>Variable</td> <td>TIPO.BOOLEANO</td> <td>Main</td> <td>False</td> <td>204</td> <td>7</td></tr> 
+<tr> <td>67</td> <td>dif_2</td> <td>Variable</td> <td>TIPO.BOOLEANO</td> <td>Main</td> <td>True</td> <td>206</td> <td>7</td></tr> 
+<tr> <td>68</td> <td>dif_3</td> <td>Variable</td> <td>TIPO.BOOLEANO</td> <td>Main</td> <td>False</td> <td>208</td> <td>7</td></tr> 
+<tr> <td>69</td> <td>dif_4</td> <td>Variable</td> <td>TIPO.BOOLEANO</td> <td>Main</td> <td>True</td> <td>210</td> <td>7</td></tr> 
+<tr> <td>70</td> <td>dif_5</td> <td>Variable</td> <td>TIPO.BOOLEANO</td> <td>Main</td> <td>False</td> <td>212</td> <td>7</td></tr> 
+<tr> <td>71</td> <td>meq_1</td> <td>Variable</td> <td>TIPO.BOOLEANO</td> <td>Main</td> <td>False</td> <td>216</td> <td>7</td></tr> 
+<tr> <td>72</td> <td>meq_2</td> <td>Variable</td> <td>TIPO.BOOLEANO</td> <td>Main</td> <td>False</td> <td>218</td> <td>7</td></tr> 
+<tr> <td>73</td> <td>meq_3</td> <td>Variable</td> <td>TIPO.BOOLEANO</td> <td>Main</td> <td>False</td> <td>220</td> <td>7</td></tr> 
+<tr> <td>74</td> <td>mei_1</td> <td>Variable</td> <td>TIPO.BOOLEANO</td> <td>Main</td> <td>True</td> <td>224</td> <td>7</td></tr> 
+<tr> <td>75</td> <td>mei_2</td> <td>Variable</td> <td>TIPO.BOOLEANO</td> <td>Main</td> <td>False</td> <td>226</td> <td>7</td></tr> 
+<tr> <td>76</td> <td>mei_3</td> <td>Variable</td> <td>TIPO.BOOLEANO</td> <td>Main</td> <td>True</td> <td>228</td> <td>7</td></tr> 
+<tr> <td>77</td> <td>maq_1</td> <td>Variable</td> <td>TIPO.BOOLEANO</td> <td>Main</td> <td>False</td> <td>232</td> <td>7</td></tr> 
+<tr> <td>78</td> <td>maq_2</td> <td>Variable</td> <td>TIPO.BOOLEANO</td> <td>Main</td> <td>True</td> <td>234</td> <td>7</td></tr> 
+<tr> <td>79</td> <td>maq_3</td> <td>Variable</td> <td>TIPO.BOOLEANO</td> <td>Main</td> <td>False</td> <td>236</td> <td>7</td></tr> 
+<tr> <td>80</td> <td>mai_1</td> <td>Variable</td> <td>TIPO.BOOLEANO</td> <td>Main</td> <td>True</td> <td>240</td> <td>7</td></tr> 
+<tr> <td>81</td> <td>mai_2</td> <td>Variable</td> <td>TIPO.BOOLEANO</td> <td>Main</td> <td>True</td> <td>242</td> <td>7</td></tr> 
+<tr> <td>82</td> <td>mai_3</td> <td>Variable</td> <td>TIPO.BOOLEANO</td> <td>Main</td> <td>True</td> <td>244</td> <td>7</td></tr> 
+<tr> <td>83</td> <td>or_1</td> <td>Variable</td> <td>TIPO.BOOLEANO</td> <td>Main</td> <td>False</td> <td>249</td> <td>7</td></tr> 
+<tr> <td>84</td> <td>or_2</td> <td>Variable</td> <td>TIPO.BOOLEANO</td> <td>Main</td> <td>True</td> <td>251</td> <td>7</td></tr> 
+<tr> <td>85</td> <td>or_3</td> <td>Variable</td> <td>TIPO.BOOLEANO</td> <td>Main</td> <td>True</td> <td>253</td> <td>7</td></tr> 
+<tr> <td>86</td> <td>or_4</td> <td>Variable</td> <td>TIPO.BOOLEANO</td> <td>Main</td> <td>True</td> <td>255</td> <td>7</td></tr> 
+<tr> <td>87</td> <td>and_1</td> <td>Variable</td> <td>TIPO.BOOLEANO</td> <td>Main</td> <td>False</td> <td>258</td> <td>7</td></tr> 
+<tr> <td>88</td> <td>and_2</td> <td>Variable</td> <td>TIPO.BOOLEANO</td> <td>Main</td> <td>False</td> <td>260</td> <td>7</td></tr> 
+<tr> <td>89</td> <td>and_3</td> <td>Variable</td> <td>TIPO.BOOLEANO</td> <td>Main</td> <td>False</td> <td>262</td> <td>7</td></tr> 
+<tr> <td>90</td> <td>and_4</td> <td>Variable</td> <td>TIPO.BOOLEANO</td> <td>Main</td> <td>True</td> <td>264</td> <td>7</td></tr> 
+<tr> <td>91</td> <td>not_a</td> <td>Variable</td> <td>TIPO.BOOLEANO</td> <td>Main</td> <td>True</td> <td>267</td> <td>7</td></tr> 
+<tr> <td>92</td> <td>not_b</td> <td>Variable</td> <td>TIPO.BOOLEANO</td> <td>Main</td> <td>False</td> <td>268</td> <td>7</td></tr> 
+<tr> <td>93</td> <td>not_1</td> <td>Variable</td> <td>TIPO.BOOLEANO</td> <td>Main</td> <td>False</td> <td>269</td> <td>7</td></tr> 
+<tr> <td>94</td> <td>not_2</td> <td>Variable</td> <td>TIPO.BOOLEANO</td> <td>Main</td> <td>True</td> <td>271</td> <td>7</td></tr> 
+<tr> <td>95</td> <td>n0</td> <td>Variable</td> <td>TIPO.ENTERO</td> <td>Main</td> <td>34</td> <td>286</td> <td>7</td></tr> 
+<tr> <td>96</td> <td>n111</td> <td>Variable</td> <td>TIPO.DECIMAL</td> <td>Main</td> <td>2.0</td> <td>295</td> <td>7</td></tr> 
+<tr> <td>97</td> <td>condicion1</td> <td>Variable</td> <td>TIPO.BOOLEANO</td> <td>Main</td> <td>False</td> <td>298</td> <td>7</td></tr> 
+<tr> <td>98</td> <td>aritmetica12</td> <td>Variable</td> <td>TIPO.DECIMAL</td> <td>Main</td> <td>1.0</td> <td>299</td> <td>7</td></tr> 
+<tr> <td>99</td> <td>condicion2</td> <td>Variable</td> <td>TIPO.BOOLEANO</td> <td>Main</td> <td>False</td> <td>300</td> <td>7</td></tr> 
+<tr> <td>100</td> <td>condicion3</td> <td>Variable</td> <td>TIPO.BOOLEANO</td> <td>Main</td> <td>False</td> <td>301</td> <td>7</td></tr> 
+<tr> <td>101</td> <td>n007</td> <td>Variable</td> <td>TIPO.DECIMAL</td> <td>Main</td> <td>50.0</td> <td>311</td> <td>7</td></tr> 
+<tr> <td>102</td> <td>agr_1</td> <td>Variable</td> <td>TIPO.DECIMAL</td> <td>Main</td> <td>9.0</td> <td>366</td> <td>7</td></tr> 
+<tr> <td>103</td> <td>inc_1</td> <td>Variable</td> <td>TIPO.ENTERO</td> <td>Main</td> <td>11</td> <td>371</td> <td>7</td></tr> 
+<tr> <td>104</td> <td>inc_2</td> <td>Variable</td> <td>TIPO.DECIMAL</td> <td>Main</td> <td>11.7</td> <td>374</td> <td>7</td></tr> 
+<tr> <td>105</td> <td>dec_1</td> <td>Variable</td> <td>TIPO.ENTERO</td> <td>Main</td> <td>9</td> <td>380</td> <td>7</td></tr> 
+<tr> <td>106</td> <td>dec_2</td> <td>Variable</td> <td>TIPO.DECIMAL</td> <td>Main</td> <td>9.7</td> <td>383</td> <td>7</td></tr> 
+<tr> <td>107</td> <td>if_1</td> <td>Variable</td> <td>TIPO.ENTERO</td> <td>Main</td> <td>25</td> <td>389</td> <td>7</td></tr> 
+<tr> <td>108</td> <td>swi_1</td> <td>Variable</td> <td>TIPO.ENTERO</td> <td>Main</td> <td>25</td> <td>439</td> <td>7</td></tr> 
+<tr> <td>109</td> <td>whi_1</td> <td>Variable</td> <td>TIPO.ENTERO</td> <td>Main</td> <td>6</td> <td>456</td> <td>7</td></tr> 
+<tr> <td>110</td> <td>whi_2</td> <td>Variable</td> <td>TIPO.ENTERO</td> <td>Main</td> <td>4</td> <td>469</td> <td>7</td></tr> 
+<tr> <td>111</td> <td>whi_2_anidado</td> <td>Variable</td> <td>TIPO.ENTERO</td> <td>While</td> <td>4</td> <td>473</td> <td>9</td></tr> 
+<tr> <td>112</td> <td>i</td> <td>Variable</td> <td>TIPO.ENTERO</td> <td>For</td> <td>4</td> <td>496</td> <td>11</td></tr> 
+<tr> <td>113</td> <td>i</td> <td>Variable</td> <td>TIPO.ENTERO</td> <td>For</td> <td>4</td> <td>506</td> <td>11</td></tr> 
+<tr> <td>114</td> <td>j</td> <td>Variable</td> <td>TIPO.ENTERO</td> <td>For</td> <td>4</td> <td>509</td> <td>13</td></tr> 
+<tr> <td>115</td> <td>whi_3</td> <td>Variable</td> <td>TIPO.ENTERO</td> <td>Main</td> <td>4</td> <td>529</td> <td>7</td></tr> 
+<tr> <td>116</td> <td>i</td> <td>Variable</td> <td>TIPO.ENTERO</td> <td>For</td> <td>4</td> <td>533</td> <td>13</td></tr> 
+<tr> <td>117</td> <td>i</td> <td>Variable</td> <td>TIPO.ENTERO</td> <td>For</td> <td>4</td> <td>554</td> <td>11</td></tr> 
+<tr> <td>118</td> <td>whi_4</td> <td>Variable</td> <td>TIPO.ENTERO</td> <td>For</td> <td>4</td> <td>557</td> <td>9</td></tr> 
+<tr> <td>119</td> <td>numeroFactorial</td> <td>Variable</td> <td>TIPO.ENTERO</td> <td>Main</td> <td>-1</td> <td>580</td> <td>7</td></tr> 
+<tr> <td>120</td> <td>fact</td> <td>Variable</td> <td>TIPO.ENTERO</td> <td>While</td> <td>720</td> <td>582</td> <td>11</td></tr> 
+<tr> <td>121</td> <td>cadena1</td> <td>Variable</td> <td>TIPO.CADENA</td> <td>While</td> <td>El factorial de: 6 = 6 * 5 * 4 * 3 * 2 * 1 = 720</td> <td>583</td> <td>11</td></tr> 
+<tr> <td>122</td> <td>i</td> <td>Variable</td> <td>TIPO.ENTERO</td> <td>For</td> <td>0</td> <td>585</td> <td>18</td></tr> 
+<tr> <td>123</td> <td>iii</td> <td>Variable</td> <td>TIPO.ENTERO</td> <td>Main</td> <td>8</td> <td>601</td> <td>7</td></tr> 
+<tr> <td>124</td> <td>nump</td> <td>Variable</td> <td>TIPO.ENTERO</td> <td>Main</td> <td>8</td> <td>602</td> <td>7</td></tr> 
+<tr> <td>125</td> <td>j</td> <td>Variable</td> <td>TIPO.ENTERO</td> <td>While</td> <td>1</td> <td>604</td> <td>11</td></tr> 
+<tr> <td>126</td> <td>numeroMostrar</td> <td>Variable</td> <td>TIPO.ENTERO</td> <td>While</td> <td>2</td> <td>605</td> <td>11</td></tr> 
+<tr> <td>127</td> <td>unaFila</td> <td>Variable</td> <td>TIPO.CADENA</td> <td>While</td> <td> 1</td> <td>606</td> <td>11</td></tr> 
+<tr> <td>128</td> <td>cadenaFigura</td> <td>Variable</td> <td>TIPO.CADENA</td> <td>Main</td> <td>. . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . </td> <td>619</td> <td>7</td></tr> 
+<tr> <td>129</td> <td>figuraUNO</td> <td>Variable</td> <td>TIPO.ENTERO</td> <td>Main</td> <td>10</td> <td>620</td> <td>7</td></tr> 
+<tr> <td>130</td> <td>ip</td> <td>Variable</td> <td>TIPO.DECIMAL</td> <td>Main</td> <td>11.0</td> <td>621</td> <td>7</td></tr> 
+<tr> <td>131</td> <td>j</td> <td>Variable</td> <td>TIPO.DECIMAL</td> <td>For</td> <td>16.0</td> <td>624</td> <td>9</td></tr> 
+<tr> <td>132</td> <td>absolutoi</td> <td>Variable</td> <td>TIPO.DECIMAL</td> <td>For</td> <td>15.0</td> <td>626</td> <td>11</td></tr> 
+<tr> <td>133</td> <td>absolutoj</td> <td>Variable</td> <td>TIPO.DECIMAL</td> <td>For</td> <td>15.0</td> <td>628</td> <td>11</td></tr> 
+</table>
+>];
+}

@@ -2,6 +2,7 @@ from TS.Tipo import TIPO
 from TS.Excepcion import Excepcion
 from Abstract.Instruccion import Instruccion
 from TS.Simbolo import Simbolo
+from Abstract.NodoAST import NodoAST
 
 
 class Asignacion(Instruccion):
@@ -10,20 +11,33 @@ class Asignacion(Instruccion):
         self.expresion = expresion
         self.fila = fila
         self.columna = columna
+        self.arreglo = False
 
     def interpretar(self, tree, table):
         if(self.expresion=='++'):
-            simbolo = Simbolo(self.identificador, "INCREMENTO", self.fila, self.columna, 1)
+            simbolo = Simbolo(self.identificador, "INCREMENTO", self.arreglo, self.fila, self.columna, 1)
         elif(self.expresion=='--'):
-            simbolo = Simbolo(self.identificador, "DECREMENTO", self.fila, self.columna, -1)
+            simbolo = Simbolo(self.identificador, "DECREMENTO", self.arreglo, self.fila, self.columna, -1)
         else:    
             value = self.expresion.interpretar(tree, table) # Valor a asignar a la variable
             if isinstance(value, Excepcion): return value
 
-            simbolo = Simbolo(self.identificador, self.expresion.tipo, self.fila, self.columna, value)
+            simbolo = Simbolo(self.identificador, self.expresion.tipo, self.arreglo, self.fila, self.columna, value)
 
         result = table.actualizarTabla(simbolo)
 
         if isinstance(result, Excepcion): return result
         return None
 
+    def getNodo(self):
+        nodo = NodoAST("ASIGNACION")
+        nodo.agregarHijo(str(self.identificador))
+        if self.expresion!=None and self.expresion!='++' and self.expresion!='--':
+            nodo.agregarHijoNodo(self.expresion.getNodo())
+        elif self.expresion=='++':
+            nodo2 = NodoAST("INCREMENTO")
+            nodo.agregarHijoNodo(nodo2)
+        elif self.expresion=='--':
+            nodo2 = NodoAST("DECREMENTO")
+            nodo.agregarHijoNodo(nodo2)
+        return nodo 

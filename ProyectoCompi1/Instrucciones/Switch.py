@@ -4,6 +4,7 @@ from TS.Tipo              import TIPO
 from TS.Tipo              import OperadorRelacional
 from TS.TablaSimbolos     import TablaSimbolos
 from Expresiones.Relacional     import Relacional
+from Abstract.NodoAST import NodoAST
 
 class Switch(Instruccion):
     def __init__(self, expresion, lst_case,default, fila, columna):
@@ -20,6 +21,8 @@ class Switch(Instruccion):
         else:
             result = False
             for case in self.lst_case:
+                
+                
                 value_case = case.expresion.interpretar(tree,table)
                 if isinstance(value_case, Excepcion): return value_case
 
@@ -49,3 +52,11 @@ class Switch(Instruccion):
             if isinstance(value, Excepcion) :
                 tree.getExcepciones().append(value)
                 tree.updateConsola(value.toString())
+    
+    def getNodo(self):
+        nodo = NodoAST("Switch")
+        instrucciones = NodoAST("INSTRUCCIONES")
+        for case in self.lst_case:
+            instrucciones.agregarHijoNodo(case.getNodo())
+        nodo.agregarHijoNodo(instrucciones)
+        return nodo 
